@@ -439,7 +439,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                 ],
                 const SizedBox(height: 4),
                 Text(
-                  'Data: ${category.date}',
+                  'Data: ${category.endDate}',
                   style: TextStyle(
                     color: Colors.amber.shade400,
                     fontSize: 12,

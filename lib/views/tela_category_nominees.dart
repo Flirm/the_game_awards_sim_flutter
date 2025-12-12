@@ -49,12 +49,44 @@ class _TelaCategoryNomineesState extends State<TelaCategoryNominees> {
         return StatefulBuilder(
           builder: (context, setDialogState) {
             return AlertDialog(
-              title: Text(nominee == null ? 'Adicionar Indicado' : 'Editar Indicado'),
+              backgroundColor: Colors.grey.shade900,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              title: Row(
+                children: [
+                  Icon(
+                    nominee == null ? Icons.add_circle : Icons.edit,
+                    color: Colors.amber.shade600,
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    nominee == null ? 'Adicionar Indicado' : 'Editar Indicado',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
               content: Form(
                 key: formKey,
                 child: DropdownButtonFormField<int>(
                   value: selectedGameId,
-                  decoration: const InputDecoration(labelText: 'Game'),
+                  dropdownColor: Colors.grey.shade800,
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    labelText: 'Game',
+                    labelStyle: TextStyle(color: Colors.white70),
+                    prefixIcon: Icon(Icons.videogame_asset, color: Colors.amber.shade600),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.white30),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.white30),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.amber.shade600, width: 2),
+                    ),
+                  ),
                   items: _games.map((game) {
                     return DropdownMenuItem(
                       value: game.id,
@@ -70,9 +102,15 @@ class _TelaCategoryNomineesState extends State<TelaCategoryNominees> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text('Cancelar'),
+                  child: Text('Cancelar', style: TextStyle(color: Colors.white70)),
                 ),
                 FilledButton(
+                  style: FilledButton.styleFrom(
+                    backgroundColor: Colors.amber.shade600,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                   onPressed: () {
                     if (formKey.currentState?.validate() ?? false) {
                       Navigator.of(context).pop(true);
@@ -115,60 +153,243 @@ class _TelaCategoryNomineesState extends State<TelaCategoryNominees> {
     return game.name ?? 'Game desconhecido';
   }
 
+  Widget _buildNomineeCard(CategoryGame nominee, int position) {
+    final gameName = _getGameName(nominee.gameId);
+    
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: () => _openForm(nominee: nominee),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: position < 3
+                  ? [Colors.amber.shade600, Colors.amber.shade800]
+                  : [Colors.blue.shade700, Colors.blue.shade900],
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              children: [
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Center(
+                    child: Text(
+                      '${position + 1}',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.videogame_asset,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              gameName,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      if (position < 3) ...[
+                        const SizedBox(height: 4),
+                        Text(
+                          position == 0 ? '🏆 Destaque' : position == 1 ? '🥈 Indicado' : '🥉 Indicado',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete, color: Colors.red.shade300),
+                  onPressed: () async {
+                    final confirm = await showDialog<bool>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        backgroundColor: Colors.grey.shade900,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        title: Text(
+                          'Excluir Indicado',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        content: Text(
+                          'Deseja realmente excluir "$gameName" desta categoria?',
+                          style: TextStyle(color: Colors.white70),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: Text('Cancelar', style: TextStyle(color: Colors.white70)),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: Text('Excluir', style: TextStyle(color: Colors.red)),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (confirm == true) {
+                      _deleteNominee(nominee.id!);
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.category.title ?? 'Indicados'),
-        centerTitle: true,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _openForm(),
-        child: const Icon(Icons.add),
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : _nominees.isEmpty
-              ? const Center(child: Text('Nenhum game indicado nesta categoria.'))
-              : ListView.separated(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: _nominees.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 12),
-                  itemBuilder: (context, index) {
-                    final nominee = _nominees[index];
-                    return Dismissible(
-                      key: Key('nominee_${nominee.id}'),
-                      background: Container(
-                        color: Colors.blue.shade100,
-                        alignment: Alignment.centerLeft,
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: const Icon(Icons.edit, color: Colors.blue),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.purple.shade900,
+              Colors.black,
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Header
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_back, color: Colors.white, size: 28),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.category.title ?? 'Indicados',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Gerenciar indicados da categoria',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white70,
+                            ),
+                          ),
+                        ],
                       ),
-                      secondaryBackground: Container(
-                        color: Colors.red.shade100,
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: const Icon(Icons.delete, color: Colors.red),
-                      ),
-                      confirmDismiss: (direction) async {
-                        if (direction == DismissDirection.startToEnd) {
-                          await _openForm(nominee: nominee);
-                          return false;
-                        }
-                        if (direction == DismissDirection.endToStart) {
-                          _deleteNominee(nominee.id!);
-                          return true;
-                        }
-                        return false;
-                      },
-                      child: ListTile(
-                        tileColor: Colors.grey.shade100,
-                        leading: const Icon(Icons.videogame_asset),
-                        title: Text(_getGameName(nominee.gameId)),
-                      ),
-                    );
-                  },
+                    ),
+                    FloatingActionButton(
+                      onPressed: () => _openForm(),
+                      backgroundColor: Colors.amber.shade600,
+                      child: const Icon(Icons.add, size: 28),
+                    ),
+                  ],
                 ),
+              ),
+              
+              // Content
+              Expanded(
+                child: _isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.amber.shade600,
+                        ),
+                      )
+                    : _nominees.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.videogame_asset_outlined,
+                                  size: 80,
+                                  color: Colors.white30,
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  'Nenhum game indicado',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.white70,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                TextButton.icon(
+                                  onPressed: () => _openForm(),
+                                  icon: Icon(Icons.add),
+                                  label: Text('Adicionar primeiro indicado'),
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: Colors.amber.shade600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : RefreshIndicator(
+                            onRefresh: _loadData,
+                            color: Colors.amber.shade600,
+                            child: ListView.separated(
+                              padding: const EdgeInsets.all(24),
+                              itemCount: _nominees.length,
+                              separatorBuilder: (_, __) => const SizedBox(height: 16),
+                              itemBuilder: (context, index) {
+                                return _buildNomineeCard(_nominees[index], index);
+                              },
+                            ),
+                          ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

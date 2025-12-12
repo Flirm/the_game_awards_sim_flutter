@@ -310,7 +310,7 @@ class _CategoryGamesScreenState extends State<CategoryGamesScreen> {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        'Data: ${widget.category.date}',
+                        'Data: ${widget.category.endDate}',
                         style: TextStyle(
                           color: Colors.amber.shade400,
                           fontSize: 12,

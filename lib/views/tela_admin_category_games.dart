@@ -30,40 +30,239 @@ class _TelaAdminCategoryGamesState extends State<TelaAdminCategoryGames> {
     });
   }
 
+  Widget _buildCategoryCard(Category category) {
+    final startDate = category.startDate != null
+        ? DateTime.tryParse(category.startDate!)
+        : null;
+    final endDate = category.endDate != null
+        ? DateTime.tryParse(category.endDate!)
+        : null;
+    
+    final now = DateTime.now();
+    final isActive = startDate != null &&
+        endDate != null &&
+        now.isAfter(startDate) &&
+        now.isBefore(endDate);
+
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => TelaCategoryNominees(category: category),
+            ),
+          );
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: isActive
+                  ? [Colors.amber.shade700, Colors.orange.shade800]
+                  : [Colors.grey.shade700, Colors.grey.shade900],
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.emoji_events,
+                      color: Colors.white,
+                      size: 32,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        category.title ?? 'Sem título',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: isActive
+                            ? Colors.green.shade400
+                            : Colors.red.shade400,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        isActive ? 'ATIVA' : 'INATIVA',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                if (category.description != null &&
+                    category.description!.isNotEmpty) ...[
+                  const SizedBox(height: 12),
+                  Text(
+                    category.description!,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white70,
+                      height: 1.4,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Icon(Icons.calendar_today, color: Colors.white70, size: 16),
+                    const SizedBox(width: 8),
+                    Text(
+                      startDate != null
+                          ? '${startDate.day}/${startDate.month}/${startDate.year}'
+                          : 'Sem data',
+                      style: TextStyle(color: Colors.white70, fontSize: 14),
+                    ),
+                    const SizedBox(width: 16),
+                    Icon(Icons.event, color: Colors.white70, size: 16),
+                    const SizedBox(width: 8),
+                    Text(
+                      endDate != null
+                          ? '${endDate.day}/${endDate.month}/${endDate.year}'
+                          : 'Sem data',
+                      style: TextStyle(color: Colors.white70, fontSize: 14),
+                    ),
+                    const Spacer(),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Premiações - Categorias'),
-        centerTitle: true,
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : _categories.isEmpty
-              ? const Center(child: Text('Nenhuma categoria cadastrada.'))
-              : ListView.separated(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: _categories.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 12),
-                  itemBuilder: (context, index) {
-                    final category = _categories[index];
-                    return Card(
-                      child: ListTile(
-                        tileColor: Colors.grey.shade100,
-                        title: Text(category.title ?? 'Sem título'),
-                        subtitle: Text(category.description ?? ''),
-                        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => TelaCategoryNominees(category: category),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.purple.shade900,
+              Colors.black,
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Header
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_back, color: Colors.white, size: 28),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Premiações',
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
-                          );
-                        },
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Gerenciar categorias e indicados',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white70,
+                            ),
+                          ),
+                        ],
                       ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
+              ),
+              
+              // Content
+              Expanded(
+                child: _isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.amber.shade600,
+                        ),
+                      )
+                    : _categories.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.emoji_events_outlined,
+                                  size: 80,
+                                  color: Colors.white30,
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  'Nenhuma categoria cadastrada',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.white70,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : RefreshIndicator(
+                            onRefresh: _loadData,
+                            color: Colors.amber.shade600,
+                            child: ListView.separated(
+                              padding: const EdgeInsets.all(24),
+                              itemCount: _categories.length,
+                              separatorBuilder: (_, __) =>
+                                  const SizedBox(height: 16),
+                              itemBuilder: (context, index) {
+                                return _buildCategoryCard(_categories[index]);
+                              },
+                            ),
+                          ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

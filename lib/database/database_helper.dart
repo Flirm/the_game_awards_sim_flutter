@@ -21,9 +21,37 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
     );
+  }
+
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      // Migração da versão 1 para 2: adicionar start_date e end_date
+      await db.execute('''
+        CREATE TABLE category_new(
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          user_id INTEGER NOT NULL,
+          title VARCHAR NOT NULL,
+          description TEXT,  
+          start_date VARCHAR NOT NULL,
+          end_date VARCHAR NOT NULL,
+          FOREIGN KEY(user_id) REFERENCES user(id)
+        )
+      ''');
+      
+      // Copiar dados existentes, usando date como start_date e end_date
+      await db.execute('''
+        INSERT INTO category_new (id, user_id, title, description, start_date, end_date)
+        SELECT id, user_id, title, description, date, date
+        FROM category
+      ''');
+      
+      await db.execute('DROP TABLE category');
+      await db.execute('ALTER TABLE category_new RENAME TO category');
+    }
   }
 
   Future<void> _onCreate(Database db, int version) async {
@@ -70,7 +98,8 @@ class DatabaseHelper {
         user_id INTEGER NOT NULL,
         title VARCHAR NOT NULL,
         description TEXT,  
-        date VARCHAR NOT NULL,
+        start_date VARCHAR NOT NULL,
+        end_date VARCHAR NOT NULL,
         FOREIGN KEY(user_id) REFERENCES user(id)
       )
     ''');

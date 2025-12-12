@@ -3,16 +3,18 @@ class Category {
   int? userId;
   String? title;
   String? description;
-  String? date;
+  String? startDate;
+  String? endDate;
 
-  Category(this.id, this.userId, this.title, this.description, this.date);
+  Category(this.id, this.userId, this.title, this.description, this.startDate, this.endDate);
 
   Category.fromMap(Map map){
     id = map['id'];
     userId = map['user_id'];
     title = map['title'];
     description = map['description'];
-    date = map['date'];
+    startDate = map['start_date'];
+    endDate = map['end_date'];
   }
 
   Map<String, dynamic> toMap(){
@@ -20,7 +22,8 @@ class Category {
       'user_id': userId,
       'title': title,
       'description': description,
-      'date': date
+      'start_date': startDate,
+      'end_date': endDate
     };
 
     if (id != null) {
