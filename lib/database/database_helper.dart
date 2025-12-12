@@ -1,4 +1,4 @@
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class DatabaseHelper {
@@ -16,9 +16,6 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    sqfliteFfiInit();
-    databaseFactory = databaseFactoryFfi;
-
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, 'the_game_awards.db');
 

@@ -74,4 +74,40 @@ class UserVoteController {
       whereArgs: [id],
     );
   }
+
+  Future<UserVote?> getUserVote(int userId, int categoryId) async {
+    final db = await _dbHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'user_vote',
+      where: 'user_id = ? AND category_id = ?',
+      whereArgs: [userId, categoryId],
+    );
+    if (maps.isEmpty) return null;
+    return UserVote.fromMap(maps.first);
+  }
+
+  Future<Map<int, int>> getVoteCountsByCategory(int categoryId) async {
+    final db = await _dbHelper.database;
+    final List<Map<String, dynamic>> result = await db.rawQuery('''
+      SELECT vote_game_id, COUNT(*) as count
+      FROM user_vote
+      WHERE category_id = ?
+      GROUP BY vote_game_id
+    ''', [categoryId]);
+
+    Map<int, int> voteCounts = {};
+    for (var row in result) {
+      voteCounts[row['vote_game_id'] as int] = row['count'] as int;
+    }
+    return voteCounts;
+  }
+
+  Future<int> deleteByUserAndCategory(int userId, int categoryId) async {
+    final db = await _dbHelper.database;
+    return await db.delete(
+      'user_vote',
+      where: 'user_id = ? AND category_id = ?',
+      whereArgs: [userId, categoryId],
+    );
+  }
 }

@@ -55,4 +55,15 @@ class UserController {
       whereArgs: [id],
     );
   }
+
+  Future<User?> login(String email, String password) async {
+    final db = await _dbHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'user',
+      where: 'email = ? AND password = ?',
+      whereArgs: [email, password],
+    );
+    if (maps.isEmpty) return null;
+    return User.fromMap(maps.first);
+  }
 }

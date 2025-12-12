@@ -44,4 +44,17 @@ class CategoryController {
       whereArgs: [id],
     );
   }
+
+  Future<List<Category>> getActive() async {
+    final db = await _dbHelper.database;
+    final now = DateTime.now();
+    final today = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+    
+    final List<Map<String, dynamic>> maps = await db.query(
+      'category',
+      where: 'date >= ?',
+      whereArgs: [today],
+    );
+    return List.generate(maps.length, (i) => Category.fromMap(maps[i]));
+  }
 }
