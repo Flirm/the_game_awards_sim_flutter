@@ -8,7 +8,7 @@ import '../models/genre.dart';
 import '../models/game.dart';
 
 class UserDashboardScreen extends StatefulWidget {
-  final User? user; // Pode ser null se o usuário não estiver logado
+  final User? user;
 
   const UserDashboardScreen({super.key, this.user});
 
@@ -27,7 +27,6 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
   bool _isLoading = true;
   bool _showActiveOnly = true;
   
-  // Filtros
   int? _selectedCategoryId;
   int? _selectedGenreId;
   int? _selectedPosition;
@@ -85,7 +84,6 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
         _isLoading = false;
       });
 
-      // Mostrar resultado da busca
       if (!mounted) return;
       if (games.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -185,7 +183,6 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
             ? const Center(child: CircularProgressIndicator(color: Colors.amber))
             : Column(
                 children: [
-                  // Header com informações do usuário
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
@@ -237,7 +234,6 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                     ),
                   ),
 
-                  // Filtros
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
@@ -259,7 +255,6 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                         ),
                         const SizedBox(height: 12),
 
-                        // Dropdown Categoria
                         DropdownButtonFormField<int>(
                           value: _selectedCategoryId,
                           decoration: InputDecoration(
@@ -287,7 +282,6 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                         ),
                         const SizedBox(height: 12),
 
-                        // Dropdown Gênero
                         DropdownButtonFormField<int>(
                           value: _selectedGenreId,
                           decoration: InputDecoration(
@@ -315,7 +309,6 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                         ),
                         const SizedBox(height: 12),
 
-                        // Dropdown Posição
                         DropdownButtonFormField<int>(
                           value: _selectedPosition,
                           decoration: InputDecoration(
@@ -342,7 +335,6 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                         ),
                         const SizedBox(height: 16),
 
-                        // Botões de ação
                         Row(
                           children: [
                             Expanded(
@@ -376,7 +368,6 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                     ),
                   ),
 
-                  // Lista de categorias ou resultados de busca
                   Expanded(
                     child: _filteredGames.isNotEmpty
                         ? _buildGameResults()

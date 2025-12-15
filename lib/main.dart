@@ -11,7 +11,6 @@ import 'views/category_games_screen.dart';
 import 'tela_cruds_admin.dart';
 
 void main() {
-  // Inicializa o SQLite para desktop (Windows, Linux, macOS)
   if (!kIsWeb) {
     if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
       sqfliteFfiInit();

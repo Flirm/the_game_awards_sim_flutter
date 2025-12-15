@@ -190,7 +190,7 @@ class _TelaAdminCategoriesState extends State<TelaAdminCategories> {
 
     final newCategory = Category(
       category?.id,
-      1, // TODO: pegar usuário logado
+      1, 
       titleController.text,
       descriptionController.text,
       startDateController.text,
@@ -373,7 +373,6 @@ class _TelaAdminCategoriesState extends State<TelaAdminCategories> {
         child: SafeArea(
           child: Column(
             children: [
-              // Header
               Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Row(
@@ -415,7 +414,6 @@ class _TelaAdminCategoriesState extends State<TelaAdminCategories> {
                 ),
               ),
               
-              // Content
               Expanded(
                 child: _isLoading
                     ? Center(

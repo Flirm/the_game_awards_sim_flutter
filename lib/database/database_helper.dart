@@ -29,7 +29,6 @@ class DatabaseHelper {
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
-      // Migração da versão 1 para 2: adicionar start_date e end_date
       await db.execute('''
         CREATE TABLE category_new(
           id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -42,7 +41,6 @@ class DatabaseHelper {
         )
       ''');
       
-      // Copiar dados existentes, usando date como start_date e end_date
       await db.execute('''
         INSERT INTO category_new (id, user_id, title, description, start_date, end_date)
         SELECT id, user_id, title, description, date, date

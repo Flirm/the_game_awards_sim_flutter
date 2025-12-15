@@ -88,7 +88,6 @@ class _CategoryGamesScreenState extends State<CategoryGamesScreen> {
 
     try {
       if (_userVote == null) {
-        // Criar novo voto
         UserVote newVote = UserVote(
           null,
           widget.user!.id,
@@ -106,7 +105,6 @@ class _CategoryGamesScreenState extends State<CategoryGamesScreen> {
           ),
         );
       } else {
-        // Atualizar voto existente
         _userVote!.voteGameId = gameId;
         await _voteController.update(_userVote!);
         
@@ -120,7 +118,6 @@ class _CategoryGamesScreenState extends State<CategoryGamesScreen> {
         );
       }
 
-      // Recarregar dados
       await _loadData();
     } catch (e) {
       setState(() {
@@ -212,7 +209,6 @@ class _CategoryGamesScreenState extends State<CategoryGamesScreen> {
   }
 
   List<MapEntry<int, int>> _getSortedGames() {
-    // Ordenar jogos por número de votos (ranking)
     return _voteCounts.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
   }
@@ -252,7 +248,6 @@ class _CategoryGamesScreenState extends State<CategoryGamesScreen> {
         ),
         child: Column(
           children: [
-            // Header da categoria
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
@@ -358,7 +353,6 @@ class _CategoryGamesScreenState extends State<CategoryGamesScreen> {
               ),
             ),
 
-            // Lista de jogos
             Expanded(
               child: _isLoading
                   ? const Center(
@@ -405,7 +399,6 @@ class _CategoryGamesScreenState extends State<CategoryGamesScreen> {
                                     children: [
                                       Row(
                                         children: [
-                                          // Posição
                                           if (position > 0 && position <= 3)
                                             Container(
                                               width: 32,
@@ -431,7 +424,6 @@ class _CategoryGamesScreenState extends State<CategoryGamesScreen> {
                                           if (position > 0 && position <= 3)
                                             const SizedBox(width: 12),
 
-                                          // Ícone do jogo
                                           CircleAvatar(
                                             backgroundColor: Colors.purple.shade700,
                                             child: const Icon(
@@ -441,7 +433,6 @@ class _CategoryGamesScreenState extends State<CategoryGamesScreen> {
                                           ),
                                           const SizedBox(width: 12),
 
-                                          // Nome do jogo
                                           Expanded(
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -464,7 +455,6 @@ class _CategoryGamesScreenState extends State<CategoryGamesScreen> {
                                             ),
                                           ),
 
-                                          // Indicador de voto do usuário
                                           if (isUserVote)
                                             Icon(
                                               Icons.check_circle,
@@ -474,7 +464,6 @@ class _CategoryGamesScreenState extends State<CategoryGamesScreen> {
                                         ],
                                       ),
 
-                                      // Descrição
                                       if (game.description != null &&
                                           game.description!.isNotEmpty) ...[
                                         const SizedBox(height: 12),
@@ -491,7 +480,6 @@ class _CategoryGamesScreenState extends State<CategoryGamesScreen> {
 
                                       const SizedBox(height: 12),
 
-                                      // Barra de progresso de votos
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
@@ -527,7 +515,6 @@ class _CategoryGamesScreenState extends State<CategoryGamesScreen> {
                                         ],
                                       ),
 
-                                      // Botão de voto
                                       if (widget.user != null) ...[
                                         const SizedBox(height: 12),
                                         SizedBox(

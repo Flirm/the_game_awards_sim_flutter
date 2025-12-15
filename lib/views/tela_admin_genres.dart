@@ -218,7 +218,6 @@ class _TelaAdminGenresState extends State<TelaAdminGenres> {
         child: SafeArea(
           child: Column(
             children: [
-              // Header
               Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Row(
@@ -260,7 +259,6 @@ class _TelaAdminGenresState extends State<TelaAdminGenres> {
                 ),
               ),
               
-              // Content
               Expanded(
                 child: _isLoading
                     ? Center(
