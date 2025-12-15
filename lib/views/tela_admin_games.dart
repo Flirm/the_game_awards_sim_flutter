@@ -92,179 +92,182 @@ class _TelaAdminGamesState extends State<TelaAdminGames> {
                   ),
                 ],
               ),
-              content: Form(
-                key: formKey,
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextFormField(
-                        controller: nameController,
-                        style: TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          labelText: 'Nome',
-                          labelStyle: TextStyle(color: Colors.white70),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.white30),
+              content: SizedBox(
+                width: double.maxFinite,
+                child: Form(
+                  key: formKey,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextFormField(
+                          controller: nameController,
+                          style: TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            labelText: 'Nome',
+                            labelStyle: TextStyle(color: Colors.white70),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.white30),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.white30),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.blue.shade700, width: 2),
+                            ),
+                            prefixIcon: Icon(Icons.videogame_asset, color: Colors.blue.shade700),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.white30),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.blue.shade700, width: 2),
-                          ),
-                          prefixIcon: Icon(Icons.videogame_asset, color: Colors.blue.shade700),
+                          validator: (value) => (value == null || value.isEmpty) ? 'Preencha o nome' : null,
                         ),
-                        validator: (value) => (value == null || value.isEmpty) ? 'Preencha o nome' : null,
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: descriptionController,
-                        style: TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          labelText: 'Descrição',
-                          labelStyle: TextStyle(color: Colors.white70),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.white30),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: descriptionController,
+                          style: TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            labelText: 'Descrição',
+                            labelStyle: TextStyle(color: Colors.white70),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.white30),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.white30),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.blue.shade700, width: 2),
+                            ),
+                            prefixIcon: Icon(Icons.description, color: Colors.blue.shade700),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.white30),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.blue.shade700, width: 2),
-                          ),
-                          prefixIcon: Icon(Icons.description, color: Colors.blue.shade700),
+                          maxLines: 3,
+                          validator: (value) => (value == null || value.isEmpty) ? 'Preencha a descrição' : null,
                         ),
-                        maxLines: 3,
-                        validator: (value) => (value == null || value.isEmpty) ? 'Preencha a descrição' : null,
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: releaseDateController,
-                        readOnly: true,
-                        style: TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          labelText: 'Data de Lançamento',
-                          labelStyle: TextStyle(color: Colors.white70),
-                          hintText: 'YYYY-MM-DD',
-                          hintStyle: TextStyle(color: Colors.white30),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.white30),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.white30),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.blue.shade700, width: 2),
-                          ),
-                          prefixIcon: Icon(Icons.calendar_today, color: Colors.blue.shade700),
-                          suffixIcon: IconButton(
-                            icon: Icon(Icons.calendar_month, color: Colors.white70),
-                            onPressed: () async {
-                              final date = await _selectDate(context, releaseDateController.text);
-                              if (date != null) {
-                                releaseDateController.text = date;
-                              }
-                            },
-                          ),
-                        ),
-                        onTap: () async {
-                          final date = await _selectDate(context, releaseDateController.text);
-                          if (date != null) {
-                            releaseDateController.text = date;
-                          }
-                        },
-                        validator: (value) => (value == null || value.isEmpty) ? 'Preencha a data' : null,
-                      ),
-                      const SizedBox(height: 24),
-                      Row(
-                        children: [
-                          Icon(Icons.style, size: 20, color: Colors.orange.shade600),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Gêneros:',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Colors.white,
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: releaseDateController,
+                          readOnly: true,
+                          style: TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            labelText: 'Data de Lançamento',
+                            labelStyle: TextStyle(color: Colors.white70),
+                            hintText: 'YYYY-MM-DD',
+                            hintStyle: TextStyle(color: Colors.white30),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.white30),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.white30),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.blue.shade700, width: 2),
+                            ),
+                            prefixIcon: Icon(Icons.calendar_today, color: Colors.blue.shade700),
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.calendar_month, color: Colors.white70),
+                              onPressed: () async {
+                                final date = await _selectDate(context, releaseDateController.text);
+                                if (date != null) {
+                                  releaseDateController.text = date;
+                                }
+                              },
                             ),
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      Container(
-                        constraints: BoxConstraints(maxHeight: 200),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.3),
-                          border: Border.all(color: Colors.white30),
-                          borderRadius: BorderRadius.circular(12),
+                          onTap: () async {
+                            final date = await _selectDate(context, releaseDateController.text);
+                            if (date != null) {
+                              releaseDateController.text = date;
+                            }
+                          },
+                          validator: (value) => (value == null || value.isEmpty) ? 'Preencha a data' : null,
                         ),
-                        child: _genres.isEmpty
-                            ? Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Center(
-                                  child: Text(
-                                    'Nenhum gênero cadastrado.',
-                                    style: TextStyle(color: Colors.white60),
-                                  ),
-                                ),
-                              )
-                            : ListView(
-                                shrinkWrap: true,
-                                children: _genres.map((genre) {
-                                  final isSelected = selectedGenreIds.contains(genre.id);
-                                  return Container(
-                                    margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                    decoration: BoxDecoration(
-                                      color: isSelected 
-                                          ? Colors.blue.shade700.withOpacity(0.3)
-                                          : Colors.transparent,
-                                      borderRadius: BorderRadius.circular(8),
-                                      border: Border.all(
-                                        color: isSelected 
-                                            ? Colors.blue.shade700 
-                                            : Colors.white10,
-                                        width: isSelected ? 2 : 1,
-                                      ),
+                        const SizedBox(height: 24),
+                        Row(
+                          children: [
+                            Icon(Icons.style, size: 20, color: Colors.orange.shade600),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Gêneros:',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        Container(
+                          constraints: BoxConstraints(maxHeight: 200),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.3),
+                            border: Border.all(color: Colors.white30),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: _genres.isEmpty
+                              ? Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Center(
+                                    child: Text(
+                                      'Nenhum gênero cadastrado.',
+                                      style: TextStyle(color: Colors.white60),
                                     ),
-                                    child: CheckboxListTile(
-                                      title: Text(
-                                        genre.name ?? 'Sem nome',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                  ),
+                                )
+                              : ListView(
+                                  shrinkWrap: true,
+                                  children: _genres.map((genre) {
+                                    final isSelected = selectedGenreIds.contains(genre.id);
+                                    return Container(
+                                      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color: isSelected 
+                                            ? Colors.blue.shade700.withOpacity(0.3)
+                                            : Colors.transparent,
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(
+                                          color: isSelected 
+                                              ? Colors.blue.shade700 
+                                              : Colors.white10,
+                                          width: isSelected ? 2 : 1,
                                         ),
                                       ),
-                                      value: isSelected,
-                                      onChanged: (checked) {
-                                        setDialogState(() {
-                                          if (checked == true) {
-                                            selectedGenreIds.add(genre.id!);
-                                          } else {
-                                            selectedGenreIds.remove(genre.id);
-                                          }
-                                        });
-                                      },
-                                      dense: true,
-                                      activeColor: Colors.blue.shade700,
-                                      checkColor: Colors.white,
-                                      contentPadding: EdgeInsets.symmetric(horizontal: 12),
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                      ),
-                    ],
+                                      child: CheckboxListTile(
+                                        title: Text(
+                                          genre.name ?? 'Sem nome',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                          ),
+                                        ),
+                                        value: isSelected,
+                                        onChanged: (checked) {
+                                          setDialogState(() {
+                                            if (checked == true) {
+                                              selectedGenreIds.add(genre.id!);
+                                            } else {
+                                              selectedGenreIds.remove(genre.id);
+                                            }
+                                          });
+                                        },
+                                        dense: true,
+                                        activeColor: Colors.blue.shade700,
+                                        checkColor: Colors.white,
+                                        contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

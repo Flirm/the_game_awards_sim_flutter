@@ -52,7 +52,7 @@ class CategoryController {
     
     final List<Map<String, dynamic>> maps = await db.query(
       'category',
-      where: 'date >= ?',
+      where: 'end_date >= ?',
       whereArgs: [today],
     );
     return List.generate(maps.length, (i) => Category.fromMap(maps[i]));
