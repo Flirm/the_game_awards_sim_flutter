@@ -64,7 +64,6 @@ class _TelaAdminGamesState extends State<TelaAdminGames> {
     final releaseDateController = TextEditingController(text: game?.releaseDate ?? '');
     final formKey = GlobalKey<FormState>();
 
-    // Carregar gêneros já vinculados ao game (se estiver editando)
     Set<int> selectedGenreIds = {};
     if (game?.id != null) {
       final gameGenres = await _gameGenreController.getByGameId(game!.id!);
@@ -298,7 +297,7 @@ class _TelaAdminGamesState extends State<TelaAdminGames> {
 
     final newGame = Game(
       id: game?.id,
-      userId: 1, // TODO: pegar usuário logado
+      userId: 1,
       name: nameController.text,
       description: descriptionController.text,
       releaseDate: releaseDateController.text,
@@ -310,11 +309,9 @@ class _TelaAdminGamesState extends State<TelaAdminGames> {
     } else {
       await _controller.update(newGame);
       gameId = game.id!;
-      // Remover vínculos antigos
       await _gameGenreController.deleteByGameId(gameId);
     }
 
-    // Criar novos vínculos game-genre
     for (final genreId in selectedGenreIds) {
       await _gameGenreController.insert(GameGenre(gameId, genreId));
     }
@@ -487,7 +484,6 @@ class _TelaAdminGamesState extends State<TelaAdminGames> {
         child: SafeArea(
           child: Column(
             children: [
-              // Header
               Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Row(
@@ -529,7 +525,6 @@ class _TelaAdminGamesState extends State<TelaAdminGames> {
                 ),
               ),
               
-              // Content
               Expanded(
                 child: _isLoading
                     ? Center(

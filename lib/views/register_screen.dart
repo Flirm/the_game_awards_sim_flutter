@@ -37,7 +37,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       });
 
       try {
-        // Verificar se o email já existe
         User? existingUser = await _userController.getByEmail(
           _emailController.text.trim(),
         );
@@ -57,13 +56,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
           return;
         }
 
-        // Criar novo usuário com o role selecionado
         User newUser = User(
           null,
           _nameController.text.trim(),
           _emailController.text.trim(),
           _passwordController.text,
-          _selectedRole, // Role selecionado (1 = Usuário, 2 = Admin)
+          _selectedRole, 
         );
 
         int userId = await _userController.insert(newUser);
@@ -71,7 +69,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         if (!mounted) return;
 
         if (userId > 0) {
-          // Cadastro bem-sucedido
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Cadastro realizado com sucesso!'),
@@ -79,12 +76,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           );
 
-          // Aguardar um pouco para mostrar a mensagem
           await Future.delayed(const Duration(seconds: 1));
 
           if (!mounted) return;
 
-          // Voltar para a tela de login
           Navigator.pop(context);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -129,7 +124,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              // AppBar customizada
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
@@ -151,7 +145,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               
-              // Conteúdo
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(24.0),
@@ -160,7 +153,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Ícone e título
                         Center(
                           child: Column(
                             children: [
@@ -190,7 +182,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const SizedBox(height: 32),
 
-                        // Campo Nome
                         TextFormField(
                           controller: _nameController,
                           style: const TextStyle(color: Colors.white),
@@ -225,7 +216,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const SizedBox(height: 16),
 
-                        // Campo Email
                         TextFormField(
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
@@ -261,7 +251,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const SizedBox(height: 16),
 
-                        // Campo Senha
                         TextFormField(
                           controller: _passwordController,
                           obscureText: _obscurePassword,
@@ -354,7 +343,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const SizedBox(height: 32),
 
-                        // Seleção de Tipo de Usuário
                         Text(
                           'Tipo de Usuário',
                           style: TextStyle(
@@ -419,10 +407,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const SizedBox(height: 16),
 
-                        // Campo Confirmar Senha
-                        
-
-                        // Botão Cadastrar
+                   
                         SizedBox(
                           width: double.infinity,
                           height: 50,
@@ -452,7 +437,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const SizedBox(height: 16),
 
-                        // Link para login
                         Center(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,

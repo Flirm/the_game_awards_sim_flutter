@@ -293,7 +293,6 @@ class _TelaCategoryNomineesState extends State<TelaCategoryNominees> {
         child: SafeArea(
           child: Column(
             children: [
-              // Header
               Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Row(
@@ -335,7 +334,6 @@ class _TelaCategoryNomineesState extends State<TelaCategoryNominees> {
                 ),
               ),
               
-              // Content
               Expanded(
                 child: _isLoading
                     ? Center(

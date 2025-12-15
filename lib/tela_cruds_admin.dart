@@ -67,7 +67,6 @@ class TelaCrudsAdmin extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              // Header com título e botão de sair
               Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Row(
@@ -110,7 +109,7 @@ class TelaCrudsAdmin extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.pop(context); // Fecha o dialog
+                                  Navigator.pop(context); 
                                   Navigator.pushNamedAndRemoveUntil(
                                     context,
                                     '/',
@@ -128,7 +127,6 @@ class TelaCrudsAdmin extends StatelessWidget {
                 ),
               ),
               
-              // Grid de opções
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24.0),

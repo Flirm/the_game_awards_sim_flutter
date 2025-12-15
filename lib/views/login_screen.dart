@@ -39,16 +39,13 @@ class _LoginScreenState extends State<LoginScreen> {
         if (!mounted) return;
 
         if (user != null) {
-          // Login bem-sucedido - verificar se é admin ou usuário comum
           if (user.role == 2) {
-            // Admin - redireciona para tela de admin
             Navigator.pushReplacementNamed(
               context,
               '/admin',
               arguments: user,
             );
           } else {
-            // Usuário comum - redireciona para dashboard
             Navigator.pushReplacementNamed(
               context,
               '/user_dashboard',
@@ -56,7 +53,6 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           }
         } else {
-          // Login falhou
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Email ou senha incorretos'),
@@ -86,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.pushReplacementNamed(
       context,
       '/user_dashboard',
-      arguments: null, // Usuário não autenticado
+      arguments: null, 
     );
   }
 
@@ -113,7 +109,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Logo/Título
                     Icon(
                       Icons.emoji_events,
                       size: 80,
@@ -137,7 +132,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 48),
 
-                    // Campo Email
                     TextFormField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
@@ -173,7 +167,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Campo Senha
                     TextFormField(
                       controller: _passwordController,
                       obscureText: _obscurePassword,
@@ -220,7 +213,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 24),
 
-                    // Botão Login
                     SizedBox(
                       width: double.infinity,
                       height: 50,
@@ -253,7 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Botão Cadastrar
+                 
                     SizedBox(
                       width: double.infinity,
                       height: 50,
@@ -280,7 +272,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 24),
 
-                    // Divisor
                     Row(
                       children: [
                         Expanded(child: Divider(color: Colors.white.withOpacity(0.3))),
@@ -296,7 +287,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 24),
 
-                    // Botão Continuar sem login
                     TextButton(
                       onPressed: _isLoading ? null : _continueWithoutLogin,
                       child: const Text(
